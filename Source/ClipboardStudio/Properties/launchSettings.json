@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ClipboardStudio (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ClipboardStudio (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
