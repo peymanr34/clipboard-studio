@@ -49,7 +49,7 @@ namespace ClipboardStudio.ViewModels
             Context.Entries.Remove(item);
             Context.SaveChanges();
 
-            Load();
+            Items.Remove(SelectedItem);
         }
 
         [CommandInvalidate(nameof(SelectedItem))]
@@ -78,7 +78,7 @@ namespace ClipboardStudio.ViewModels
         public void Clear()
         {
             Context.Entries.ExecuteDelete();
-            Load();
+            Items.Clear();
         }
 
         [CommandInvalidate(nameof(Items))]
