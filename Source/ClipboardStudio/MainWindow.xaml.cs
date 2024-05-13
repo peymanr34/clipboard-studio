@@ -28,7 +28,9 @@ namespace ClipboardStudio
             Title = "Clipboard Studio";
             ExtendsContentIntoTitleBar = true;
 
-            SetWindowSize();
+            var size = GetScaledWindowSize(400, 700);
+
+            AppWindow.Resize(size);
             AppWindow.SetIcon("Assets\\icon.ico");
 
             ViewModel = new MainViewModel(App.Context, AppNotificationManager.Default);
@@ -54,18 +56,18 @@ namespace ClipboardStudio
             }
         }
 
-        private void SetWindowSize()
+        private SizeInt32 GetScaledWindowSize(int height, int width)
         {
             var hwnd = WindowNative.GetWindowHandle(this);
             var dpi = NativeMethods.GetDpiForWindow(hwnd);
 
             var scale = dpi / 96d;
 
-            AppWindow.Resize(new SizeInt32
+            return new SizeInt32
             {
-                Height = (int)(400 * scale),
-                Width = (int)(700 * scale),
-            });
+                Height = (int)(height * scale),
+                Width = (int)(width * scale),
+            };
         }
 
         private async void Clipboard_ContentChanged(object sender, object e)
