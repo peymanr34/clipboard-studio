@@ -44,8 +44,10 @@ namespace ClipboardStudio.ViewModels
         public void Remove()
         {
             var item = Context.Entries
-                .Where(x => x.Id == SelectedItem.Id)
-                .ExecuteDelete();
+                .First(x => x.Id == SelectedItem.Id);
+
+            Context.Entries.Remove(item);
+            Context.SaveChanges();
 
             Load();
         }
