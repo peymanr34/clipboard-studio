@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using ClipboardStudio.Data.Models;
 
 namespace ClipboardStudio
@@ -11,7 +12,10 @@ namespace ClipboardStudio
             if (Uri.IsWellFormedUriString(entry.Text, UriKind.Absolute) &&
                 Path.HasExtension(entry.Text))
             {
-                return Path.GetFileName(entry.Text);
+                var uri = new Uri(entry.Text);
+                var path = HttpUtility.UrlDecode(uri.AbsolutePath);
+
+                return Path.GetFileName(path);
             }
 
             return string.Empty;
