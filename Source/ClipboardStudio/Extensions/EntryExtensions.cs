@@ -9,13 +9,14 @@ namespace ClipboardStudio
     {
         public static string GetTitle(this Entry entry)
         {
-            if (Uri.IsWellFormedUriString(entry.Text, UriKind.Absolute) &&
-                Path.HasExtension(entry.Text))
+            if (Uri.TryCreate(entry.Text, UriKind.Absolute, out var uri))
             {
-                var uri = new Uri(entry.Text);
                 var path = HttpUtility.UrlDecode(uri.AbsolutePath);
 
-                return Path.GetFileName(path);
+                if (Path.HasExtension(path))
+                {
+                    return Path.GetFileName(path);
+                }
             }
 
             return string.Empty;
