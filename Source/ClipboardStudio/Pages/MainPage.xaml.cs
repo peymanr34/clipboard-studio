@@ -34,7 +34,7 @@ namespace ClipboardStudio.Pages
             {
                 ViewModel.PasteCommand.Execute(null);
 
-                var hwnd = WindowNative.GetWindowHandle(this);
+                var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
 
                 NativeMethods.FlashWindowEx(hwnd);
                 await Task.Delay(1500);
@@ -67,7 +67,7 @@ namespace ClipboardStudio.Pages
         {
             var savePicker = new FileSavePicker();
 
-            var hwnd = WindowNative.GetWindowHandle(this);
+            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
             InitializeWithWindow.Initialize(savePicker, hwnd);
 
             savePicker.SuggestedFileName = "list";
