@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using ClipboardStudio.Data;
 using ClipboardStudio.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -91,7 +92,7 @@ namespace ClipboardStudio.ViewModels
         }
 
         [Command]
-        public async void Paste()
+        public async Task<bool> Paste()
         {
             var package = Clipboard.GetContent();
 
@@ -120,7 +121,11 @@ namespace ClipboardStudio.ViewModels
 
                 Context.SaveChanges();
                 Load();
+
+                return true;
             }
+
+            return false;
         }
 
         public void Load(string search = null)

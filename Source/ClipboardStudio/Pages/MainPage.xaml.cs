@@ -32,13 +32,14 @@ namespace ClipboardStudio.Pages
         {
             if (ViewModel.CaptureAllowed)
             {
-                ViewModel.PasteCommand.Execute(null);
+                if (await ViewModel.Paste())
+                {
+                    var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
 
-                var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-
-                NativeMethods.FlashWindowEx(hwnd);
-                await Task.Delay(1500);
-                NativeMethods.FlashWindowEx(hwnd, false);
+                    NativeMethods.FlashWindowEx(hwnd);
+                    await Task.Delay(1500);
+                    NativeMethods.FlashWindowEx(hwnd, false);
+                }
             }
         }
 
