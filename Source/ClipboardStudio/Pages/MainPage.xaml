@@ -74,6 +74,7 @@
             <AutoSuggestBox
                 Grid.Column="1"
                 Margin="5"
+                VerticalContentAlignment="Center"
                 PlaceholderText="Search"
                 QueryIcon="Find"
                 TextChanged="AutoSuggestBox_TextChanged" />
