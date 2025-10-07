@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ClipboardStudio.Data;
 using ClipboardStudio.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using MvvmGen;
@@ -107,12 +108,23 @@ namespace ClipboardStudio.ViewModels
         }
 
         [Command]
-        public async Task Import()
+        public async Task Import(object args)
         {
+            var xamlRoot = (args as Control).XamlRoot;
             var result = await Clipboard.GetHistoryItemsAsync();
 
             if (result.Status != ClipboardHistoryItemsResultStatus.Success)
             {
+                var dialog = new ContentDialog
+                {
+                    Title = "Import from Clipboard history",
+                    Content = "Clipboard history is disabled for the current user or access to the clipboard history is denied.",
+                    DefaultButton = ContentDialogButton.None,
+                    CloseButtonText = "OK",
+                    XamlRoot = xamlRoot,
+                };
+
+                await dialog.ShowAsync();
                 return;
             }
 

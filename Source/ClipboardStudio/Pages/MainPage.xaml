@@ -105,6 +105,7 @@
                             <MenuFlyoutSeparator />
                             <MenuFlyoutItem
                                 Command="{x:Bind ViewModel.ImportCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}"
                                 Text="Import from Windows"
                                 ToolTipService.ToolTip="Imports from the Windows Clipboard History" />
                             <MenuFlyoutSeparator />
