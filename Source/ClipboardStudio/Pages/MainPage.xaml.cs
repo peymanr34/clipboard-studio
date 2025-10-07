@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClipboardStudio.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.Storage.Pickers;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
-using Windows.Storage.Pickers;
 using Windows.Storage.Provider;
 using WinRT.Interop;
 
@@ -66,14 +65,13 @@ namespace ClipboardStudio.Pages
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            var savePicker = new FileSavePicker();
+            var savePicker = new FileSavePicker(App.MainWindow.AppWindow.Id)
+            {
+                SuggestedFileName = "list",
+                SuggestedStartLocation = PickerLocationId.Desktop,
+            };
 
-            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-            InitializeWithWindow.Initialize(savePicker, hwnd);
-
-            savePicker.SuggestedFileName = "list";
-            savePicker.SuggestedStartLocation = PickerLocationId.Desktop;
-            savePicker.FileTypeChoices.Add("Text File", new List<string>() { ".txt" });
+            savePicker.FileTypeChoices.Add("Text File", [".txt"]);
 
             var file = await savePicker.PickSaveFileAsync();
 
@@ -82,21 +80,23 @@ namespace ClipboardStudio.Pages
                 return;
             }
 
-            CachedFileManager.DeferUpdates(file);
+            var storageFile = await StorageFile.GetFileFromPathAsync(file.Path);
+
+            CachedFileManager.DeferUpdates(storageFile);
 
             var items = ViewModel.Items.Select(x => x.Text);
-            await FileIO.WriteLinesAsync(file, items);
+            await FileIO.WriteLinesAsync(storageFile, items);
 
-            var status = await CachedFileManager.CompleteUpdatesAsync(file);
+            var status = await CachedFileManager.CompleteUpdatesAsync(storageFile);
 
             if (status == FileUpdateStatus.Complete ||
                 status == FileUpdateStatus.CompleteAndRenamed)
             {
-                ViewModel.ShowNotificationOrDefault("File has been saved.", file.Name);
+                ViewModel.ShowNotificationOrDefault("File has been saved.", storageFile.Name);
                 return;
             }
 
-            ViewModel.ShowNotificationOrDefault("File has not been saved.", file.Name);
+            ViewModel.ShowNotificationOrDefault("File has not been saved.", storageFile.Name);
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
