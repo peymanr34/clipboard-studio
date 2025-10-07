@@ -95,6 +95,38 @@ namespace ClipboardStudio.ViewModels
         public async Task<bool> Paste()
         {
             var package = Clipboard.GetContent();
+            var result = await AddOrUpdate(package);
+
+            if (result is null)
+            {
+                return false;
+            }
+
+            Load();
+            return true;
+        }
+
+        [Command]
+        public async Task Import()
+        {
+            var result = await Clipboard.GetHistoryItemsAsync();
+
+            if (result.Status != ClipboardHistoryItemsResultStatus.Success)
+            {
+                return;
+            }
+
+            foreach (var item in result.Items.OrderBy(x => x.Timestamp))
+            {
+                await AddOrUpdate(item.Content);
+            }
+
+            Load();
+        }
+
+        private async Task<bool?> AddOrUpdate(DataPackageView package)
+        {
+            bool? result = null;
 
             if (package.Contains(StandardDataFormats.Text))
             {
@@ -111,21 +143,18 @@ namespace ClipboardStudio.ViewModels
                     };
 
                     Context.Entries.Add(entry);
-                    ShowNotificationOrDefault("Captured from Clipboard", text);
+                    result = true;
                 }
                 else
                 {
                     entry.ModifyDateUtc = DateTime.UtcNow;
-                    ShowNotificationOrDefault("Already Exists", text);
+                    result = false;
                 }
 
                 Context.SaveChanges();
-                Load();
-
-                return true;
             }
 
-            return false;
+            return result;
         }
 
         public void Load(string search = null)

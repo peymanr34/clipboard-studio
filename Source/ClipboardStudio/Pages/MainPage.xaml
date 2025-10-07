@@ -103,6 +103,11 @@
                             <ToggleMenuFlyoutItem IsChecked="{x:Bind ViewModel.NotificationAllowed, Mode=TwoWay}" Text="Notifications" />
                             <ToggleMenuFlyoutItem IsChecked="{x:Bind ViewModel.CaptureAllowed, Mode=TwoWay}" Text="Capture Clipboard" />
                             <MenuFlyoutSeparator />
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.ImportCommand}"
+                                Text="Import from Windows"
+                                ToolTipService.ToolTip="Imports from the Windows Clipboard History" />
+                            <MenuFlyoutSeparator />
                             <MenuFlyoutItem Click="Save_Click" Text="Save to file" />
                             <MenuFlyoutSeparator />
                             <MenuFlyoutItem Click="About_Click" Text="About" />
