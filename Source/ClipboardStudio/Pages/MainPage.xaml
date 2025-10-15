@@ -111,7 +111,7 @@
                             <MenuFlyoutSeparator />
                             <MenuFlyoutItem Click="Save_Click" Text="Save to file" />
                             <MenuFlyoutSeparator />
-                            <MenuFlyoutItem Click="About_Click" Text="About" />
+                            <MenuFlyoutItem Click="Settings_Click" Text="Settings" />
                         </MenuFlyout>
                     </Button.Flyout>
                     <SymbolIcon Symbol="More" />

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ClipboardStudio.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ClipboardStudio.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyTextBlockStyle}"
+            TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="5" />
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
+    <ScrollViewer>
+        <StackPanel
+            Margin="30,10"
+            HorizontalAlignment="Stretch"
+            Spacing="4">
+            <TextBlock
+                Margin="0,10"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Settings" />
+            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Launch" />
+            <controls:SettingsCard Description="Clipboard Studio will launch on system startup" Header="Launch on Startup">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE7C4;" />
+                </controls:SettingsCard.HeaderIcon>
+                <ToggleSwitch IsEnabled="{x:Bind ViewModel.CanToggleStartup, Mode=OneWay}" IsOn="{x:Bind ViewModel.StartupEnabled, Mode=TwoWay}" />
+            </controls:SettingsCard>
+            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
+            <controls:SettingsCard Description="© 2025 Peyman Mohammadi" Header="Clipboard Studio">
+                <controls:SettingsCard.HeaderIcon>
+                    <ImageIcon Source="/Assets/StoreLogo.png" />
+                </controls:SettingsCard.HeaderIcon>
+            </controls:SettingsCard>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

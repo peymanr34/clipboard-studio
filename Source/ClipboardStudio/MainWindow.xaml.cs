@@ -1,7 +1,10 @@
+using System.Linq;
 using ClipboardStudio.Pages;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
 using Windows.Graphics;
 using WinRT.Interop;
 
@@ -52,6 +55,24 @@ namespace ClipboardStudio
                 Height = (int)(height * scale),
                 Width = (int)(width * scale),
             };
+        }
+
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            var allowed = new[]
+            {
+                typeof(SettingsPage),
+            };
+
+            titleBar.IsBackButtonVisible = contentFrame.CanGoBack && allowed.Contains(e.SourcePageType);
+        }
+
+        private void TitleBar_BackRequested(TitleBar sender, object args)
+        {
+            if (contentFrame.CanGoBack)
+            {
+                contentFrame.GoBack();
+            }
         }
     }
 }

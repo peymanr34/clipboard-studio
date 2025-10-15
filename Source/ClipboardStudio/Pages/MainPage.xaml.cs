@@ -50,17 +50,9 @@ namespace ClipboardStudio.Pages
             }
         }
 
-        private async void About_Click(object sender, RoutedEventArgs e)
+        private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new ContentDialog
-            {
-                Title = "About",
-                CloseButtonText = "OK",
-                Content = new AboutPage(),
-                XamlRoot = Content.XamlRoot,
-            };
-
-            await dialog.ShowAsync();
+            Frame.Navigate(typeof(SettingsPage));
         }
 
         private async void Save_Click(object sender, RoutedEventArgs e)

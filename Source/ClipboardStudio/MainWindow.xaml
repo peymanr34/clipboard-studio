@@ -14,13 +14,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TitleBar
+            x:Name="titleBar"
             Title="{x:Bind Title}"
+            BackRequested="TitleBar_BackRequested"
             IsBackButtonVisible="False"
             IsPaneToggleButtonVisible="False">
             <TitleBar.IconSource>
                 <ImageIconSource ImageSource="/Assets/StoreLogo.png" />
             </TitleBar.IconSource>
         </TitleBar>
-        <Frame x:Name="contentFrame" Grid.Row="1" />
+        <Frame
+            x:Name="contentFrame"
+            Grid.Row="1"
+            Navigated="ContentFrame_Navigated" />
     </Grid>
 </Window>
