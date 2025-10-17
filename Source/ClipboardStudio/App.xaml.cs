@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ClipboardStudio.Data;
+using ClipboardStudio.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml;
 using Windows.Storage;
@@ -19,6 +20,8 @@ namespace ClipboardStudio
 
         public static DatabaseContext Context { get; private set; }
 
+        public static SettingsProvider Settings { get; private set; }
+
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             Context = await GetDatabaseContextAsync();
@@ -29,6 +32,8 @@ namespace ClipboardStudio
             {
                 await Context.Database.MigrateAsync();
             }
+
+            Settings = new SettingsProvider(ApplicationData.Current.LocalSettings);
 
             MainWindow = new MainWindow();
             MainWindow.Activate();

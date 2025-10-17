@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ClipboardStudio.Data;
@@ -11,7 +10,6 @@ using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using MvvmGen;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage;
 
 namespace ClipboardStudio.ViewModels
 {
@@ -20,11 +18,8 @@ namespace ClipboardStudio.ViewModels
     [Inject(typeof(DatabaseContext), PropertyName = "Context")]
     public partial class MainViewModel
     {
-        private ApplicationDataContainer _settings;
-
         partial void OnInitialize()
         {
-            _settings = ApplicationData.Current.LocalSettings;
             LoadSettings();
         }
 
@@ -225,18 +220,15 @@ namespace ClipboardStudio.ViewModels
 
         private void LoadSettings()
         {
-            _captureAllowed = Convert.ToBoolean(_settings.Values[nameof(CaptureAllowed)]);
-            _notificationAllowed = Convert.ToBoolean(_settings.Values[nameof(NotificationAllowed)]);
-
-            Debug.WriteLine("Settings loaded.");
+            // Set via the fields to avoid invoking the save method.
+            _captureAllowed = App.Settings.GetValue(SettingsKeys.CaptureAllowed, false);
+            _notificationAllowed = App.Settings.GetValue(SettingsKeys.NotificationAllowed, false);
         }
 
         private void SaveSettings()
         {
-            _settings.Values[nameof(CaptureAllowed)] = _captureAllowed;
-            _settings.Values[nameof(NotificationAllowed)] = _notificationAllowed;
-
-            Debug.WriteLine("Settings saved.");
+            App.Settings.SetValue(SettingsKeys.CaptureAllowed, CaptureAllowed);
+            App.Settings.SetValue(SettingsKeys.NotificationAllowed, NotificationAllowed);
         }
     }
 }
