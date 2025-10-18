@@ -5,5 +5,9 @@
         public const string CaptureAllowed = "CaptureAllowed";
 
         public const string NotificationAllowed = "NotificationAllowed";
+
+        public const string TrayIconEnabled = "TrayIconEnabled";
+
+        public const string CloseToTrayEnabled = "CloseToTrayEnabled";
     }
 }

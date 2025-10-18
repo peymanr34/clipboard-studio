@@ -34,6 +34,20 @@
                 </controls:SettingsCard.HeaderIcon>
                 <ToggleSwitch IsEnabled="{x:Bind ViewModel.CanToggleStartup, Mode=OneWay}" IsOn="{x:Bind ViewModel.StartupEnabled, Mode=TwoWay}" />
             </controls:SettingsCard>
+            <controls:SettingsExpander Description="Clipboard Studio icon will be shown in the system tray" Header="Show icon in system tray">
+                <controls:SettingsExpander.HeaderIcon>
+                    <FontIcon Glyph="&#xE737;" />
+                </controls:SettingsExpander.HeaderIcon>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.TrayIconEnabled, Mode=TwoWay}" />
+                <controls:SettingsExpander.Items>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <CheckBox
+                            Content="Close the window to the system tray"
+                            IsChecked="{x:Bind ViewModel.CloseToTrayEnabled, Mode=TwoWay}"
+                            IsEnabled="{x:Bind ViewModel.TrayIconEnabled, Mode=OneWay}" />
+                    </controls:SettingsCard>
+                </controls:SettingsExpander.Items>
+            </controls:SettingsExpander>
             <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
             <controls:SettingsCard Description="© 2025 Peyman Mohammadi" Header="Clipboard Studio">
                 <controls:SettingsCard.HeaderIcon>
