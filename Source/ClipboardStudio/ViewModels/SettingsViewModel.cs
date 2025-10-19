@@ -26,6 +26,10 @@ namespace ClipboardStudio.ViewModels
         [PropertyCallMethod(nameof(SaveSettings))]
         private bool _closeToTrayEnabled;
 
+        [Property]
+        [PropertyCallMethod(nameof(SaveSettings))]
+        private bool _launchToTrayEnabled;
+
         public async void Load()
         {
             StartupTask = await StartupTask.GetAsync("ClipboardStudioStartupTask");
@@ -65,15 +69,18 @@ namespace ClipboardStudio.ViewModels
             // Set via the fields to avoid invoking the save method.
             _trayIconEnabled = App.Settings.GetValue(SettingsKeys.TrayIconEnabled, false);
             _closeToTrayEnabled = App.Settings.GetValue(SettingsKeys.CloseToTrayEnabled, false);
+            _launchToTrayEnabled = App.Settings.GetValue(SettingsKeys.LaunchToTrayEnabled, false);
 
             OnPropertyChanged(nameof(TrayIconEnabled));
             OnPropertyChanged(nameof(CloseToTrayEnabled));
+            OnPropertyChanged(nameof(LaunchToTrayEnabled));
         }
 
         private void SaveSettings()
         {
             App.Settings.SetValue(SettingsKeys.TrayIconEnabled, TrayIconEnabled);
             App.Settings.SetValue(SettingsKeys.CloseToTrayEnabled, CloseToTrayEnabled);
+            App.Settings.SetValue(SettingsKeys.LaunchToTrayEnabled, LaunchToTrayEnabled);
 
             App.TrayIcon.IsVisible = TrayIconEnabled;
         }

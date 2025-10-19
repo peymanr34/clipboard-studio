@@ -9,5 +9,7 @@
         public const string TrayIconEnabled = "TrayIconEnabled";
 
         public const string CloseToTrayEnabled = "CloseToTrayEnabled";
+
+        public const string LaunchToTrayEnabled = "LaunchToTrayEnabled";
     }
 }

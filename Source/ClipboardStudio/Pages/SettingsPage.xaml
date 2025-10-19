@@ -46,6 +46,12 @@
                             IsChecked="{x:Bind ViewModel.CloseToTrayEnabled, Mode=TwoWay}"
                             IsEnabled="{x:Bind ViewModel.TrayIconEnabled, Mode=OneWay}" />
                     </controls:SettingsCard>
+                    <controls:SettingsCard ContentAlignment="Left">
+                        <CheckBox
+                            Content="Launch to system tray on system startup"
+                            IsChecked="{x:Bind ViewModel.LaunchToTrayEnabled, Mode=TwoWay}"
+                            IsEnabled="{x:Bind ViewModel.TrayIconEnabled, Mode=OneWay}" />
+                    </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
             </controls:SettingsExpander>
             <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />

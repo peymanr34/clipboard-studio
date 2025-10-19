@@ -42,7 +42,14 @@ namespace ClipboardStudio
 
             MainWindow = new MainWindow();
             MainWindow.AppWindow.Closing += AppWindow_Closing;
-            MainWindow.Activate();
+
+            var launchToTray = LaunchedFromStartupTask() &&
+                Settings.GetValue(SettingsKeys.LaunchToTrayEnabled, false);
+
+            if (!launchToTray)
+            {
+                MainWindow.Activate();
+            }
 
             TrayIcon = new TrayIcon(0, "Assets\\icon.ico", "Clipboard Studio");
             TrayIcon.Selected += TrayIcon_Selected;
@@ -60,6 +67,12 @@ namespace ClipboardStudio
             optionsBuilder.UseSqlite($"Data Source={file.Path}");
 
             return new DatabaseContext(optionsBuilder.Options);
+        }
+
+        private static bool LaunchedFromStartupTask()
+        {
+            var args = Windows.ApplicationModel.AppInstance.GetActivatedEventArgs();
+            return args?.Kind == Windows.ApplicationModel.Activation.ActivationKind.StartupTask;
         }
 
         private static void TrayIcon_ContextMenu(TrayIcon sender, TrayIconEventArgs e)
