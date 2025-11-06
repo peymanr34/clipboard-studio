@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MvvmGen;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace ClipboardStudio.ViewModels
 {
@@ -30,12 +32,46 @@ namespace ClipboardStudio.ViewModels
         [PropertyCallMethod(nameof(SaveSettings))]
         private bool _launchToTrayEnabled;
 
+        [Property]
+        private bool _canImportHistory;
+
+        [Property]
+        private bool _importCompleted;
+
+        [Command(CanExecuteMethod = nameof(CanImport))]
+        public async Task Import()
+        {
+            var result = await Clipboard.GetHistoryItemsAsync();
+
+            if (result.Status != ClipboardHistoryItemsResultStatus.Success)
+            {
+                return;
+            }
+
+            foreach (var item in result.Items.OrderBy(x => x.Timestamp))
+            {
+                await App.Context.AddOrUpdateEntryAsync(item.Content);
+            }
+
+            ImportCompleted = true;
+        }
+
+        [CommandInvalidate(nameof(ImportCompleted))]
+        [CommandInvalidate(nameof(CanImportHistory))]
+        public bool CanImport()
+        {
+            return CanImportHistory && !ImportCompleted;
+        }
+
         public async void Load()
         {
             StartupTask = await StartupTask.GetAsync("ClipboardStudioStartupTask");
             SetStartupState(StartupTask.State);
 
             LoadSettings();
+            LoadClipboardSettings();
+
+            Clipboard.HistoryEnabledChanged += Clipboard_HistoryEnabledChanged;
         }
 
         private async Task StartupChanged()
@@ -62,6 +98,16 @@ namespace ClipboardStudio.ViewModels
 
             OnPropertyChanged(nameof(StartupEnabled));
             OnPropertyChanged(nameof(CanToggleStartup));
+        }
+
+        private void LoadClipboardSettings()
+        {
+            CanImportHistory = Clipboard.IsHistoryEnabled();
+        }
+
+        private void Clipboard_HistoryEnabledChanged(object sender, object e)
+        {
+            LoadClipboardSettings();
         }
 
         private void LoadSettings()

@@ -54,6 +54,32 @@
                     </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
             </controls:SettingsExpander>
+            <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Import" />
+            <controls:SettingsCard
+                Description="Imports the clipboard history from Windows"
+                Header="Import from Windows"
+                IsEnabled="{x:Bind ViewModel.CanImportHistory, Mode=OneWay}">
+                <controls:SettingsCard.HeaderIcon>
+                    <SymbolIcon Symbol="Import" />
+                </controls:SettingsCard.HeaderIcon>
+                <Button Content="Import" Style="{StaticResource AccentButtonStyle}">
+                    <Button.Flyout>
+                        <Flyout x:Name="ImportFlyout" Placement="Left">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,5"
+                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                    Text="Would you like to import all history items?" />
+                                <TextBlock Margin="0,0,0,12" Text="This action cannot be undone." />
+                                <Button
+                                    Click="ImportButton_Click"
+                                    Command="{x:Bind ViewModel.ImportCommand}"
+                                    Content="Yes, Import all." />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </controls:SettingsCard>
             <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
             <controls:SettingsCard Description="© 2025 Peyman Mohammadi" Header="Clipboard Studio">
                 <controls:SettingsCard.HeaderIcon>

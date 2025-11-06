@@ -1,4 +1,5 @@
 using ClipboardStudio.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -19,6 +20,11 @@ namespace ClipboardStudio.Pages
             ViewModel.Load();
 
             base.OnNavigatedTo(e);
+        }
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            ImportFlyout.Hide();
         }
     }
 }

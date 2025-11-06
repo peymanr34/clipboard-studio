@@ -3,9 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ClipboardStudio.Data;
-using ClipboardStudio.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using MvvmGen;
@@ -91,7 +89,7 @@ namespace ClipboardStudio.ViewModels
         public async Task<bool> Paste()
         {
             var package = Clipboard.GetContent();
-            var result = await AddOrUpdate(package);
+            var result = await Context.AddOrUpdateEntryAsync(package);
 
             if (result is null)
             {
@@ -100,68 +98,6 @@ namespace ClipboardStudio.ViewModels
 
             Load();
             return true;
-        }
-
-        [Command]
-        public async Task Import(object args)
-        {
-            var xamlRoot = (args as Control).XamlRoot;
-            var result = await Clipboard.GetHistoryItemsAsync();
-
-            if (result.Status != ClipboardHistoryItemsResultStatus.Success)
-            {
-                var dialog = new ContentDialog
-                {
-                    Title = "Import from Clipboard history",
-                    Content = "Clipboard history is disabled for the current user or access to the clipboard history is denied.",
-                    DefaultButton = ContentDialogButton.None,
-                    CloseButtonText = "OK",
-                    XamlRoot = xamlRoot,
-                };
-
-                await dialog.ShowAsync();
-                return;
-            }
-
-            foreach (var item in result.Items.OrderBy(x => x.Timestamp))
-            {
-                await AddOrUpdate(item.Content);
-            }
-
-            Load();
-        }
-
-        private async Task<bool?> AddOrUpdate(DataPackageView package)
-        {
-            bool? result = null;
-
-            if (package.Contains(StandardDataFormats.Text))
-            {
-                var text = await package.GetTextAsync();
-
-                var entry = Context.Entries
-                    .FirstOrDefault(x => EF.Functions.Collate(x.Text, "NOCASE") == text);
-
-                if (entry is null)
-                {
-                    entry = new Entry
-                    {
-                        Text = text,
-                    };
-
-                    Context.Entries.Add(entry);
-                    result = true;
-                }
-                else
-                {
-                    entry.ModifyDateUtc = DateTime.UtcNow;
-                    result = false;
-                }
-
-                Context.SaveChanges();
-            }
-
-            return result;
         }
 
         public void Load(string search = null)
