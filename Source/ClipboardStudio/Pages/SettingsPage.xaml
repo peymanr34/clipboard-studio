@@ -86,6 +86,12 @@
                     <ImageIcon Source="/Assets/StoreLogo.png" />
                 </controls:SettingsCard.HeaderIcon>
             </controls:SettingsCard>
+            <HyperlinkButton Margin="0,8,0,0" Click="RateAndReview_Click">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Margin="0,0,10,0" Glyph="&#xED15;" />
+                    <TextBlock Text="Rate and Review" />
+                </StackPanel>
+            </HyperlinkButton>
         </StackPanel>
     </ScrollViewer>
 </Page>
