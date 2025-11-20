@@ -4,7 +4,9 @@ Clipboard Studio is an open-source clipboard management application to help you 
 
 ## Features
 
+- Import from Windows Clipboard History
 - Automatic Clipboard Capture
+- System Tray Support
 - Unlimited History
 - Export to File
 
